@@ -19,17 +19,21 @@ public class LineFollow extends Command {
 
   //PID & Control Parameters
   //Variables with dimensions are in S.I. units.
-  /*
-   * P 1.00
+  /* Wing:
+   * P 2.5
    * I 0.00
-   * D 0.50
-   * YAWRATE 0.80
-   * SPEED 0.65
+   * D kp/0.030
+   * SPEED 0.50
+   * 
+   * Centre
+   * P 3.5
+   * I 0.0
+   * D kp/0.025
+   * SPEED 0.40
    */
-  private final double kp = 2.0; //2.0
+  private final double kp = 3.5;
   private final double ki = 0.0;
-  private final double kd = kp/0.030;
-  private final double yawrate = 1.00;
+  private final double kd = kp/0.025;
   private final double speed = 0.40;
 
   private double m_error;

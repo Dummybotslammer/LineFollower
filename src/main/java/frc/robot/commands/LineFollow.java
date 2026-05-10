@@ -26,18 +26,18 @@ public class LineFollow extends Command {
    * YAWRATE 0.80
    * SPEED 0.65
    */
-  private final double kp = 1.00;
-  private final double ki = 0.00;
-  private final double kd = 0.50;
-  private final double yawrate = 0.80;
-  private final double speed = 0.65;
+  private final double kp = 2.0; //2.0
+  private final double ki = 0.0;
+  private final double kd = kp/0.030;
+  private final double yawrate = 1.00;
+  private final double speed = 0.40;
 
   private double m_error;
   private double m_previousError;
   private double m_t;
   private double m_distance = 0.0;
 
-  private final double m_threshold = 100;
+  private final double m_threshold = 200;
 
   public LineFollow(XRPDrivetrain drivetrain) {
     m_drivetrain = drivetrain;
@@ -66,23 +66,24 @@ public class LineFollow extends Command {
   @Override
   public void execute() {
     //Rough method for tracking distance.
-    SmartDashboard.putNumber("Left Encoder", m_drivetrain.getLeftDistanceInch());
-    SmartDashboard.putNumber("Right Encoder", m_drivetrain.getRightDistanceInch());
+    SmartDashboard.putNumber("error", m_error);
     this.m_distance = (m_drivetrain.getLeftDistanceInch() + m_drivetrain.getRightDistanceInch())/2;
     if(this.m_distance >= this.m_threshold) {
-      m_drivetrain.arcadeDrive(0.0, 0.0);
-      return;
+      //m_drivetrain.arcadeDrive(0.0, 0.0);
+      //return;
     }
 
     //Actual PID line following part.
     double lReflectance = m_sensor.getLeftReflectanceValue();
     double rReflectance = m_sensor.getRightReflectanceValue();
-    this.m_error = lReflectance - rReflectance;
+    this.m_error = (lReflectance - rReflectance)/1.0;
     //Ideally, the error should be zero, i.e. difference = 0
     //If the error > 0, Right is in black, left in in white = turn right : CW
     //If the error < 0, Right is in white, left is in black = turn left : CCW
     double pid_response = computePIDResponse();
-    m_drivetrain.arcadeDrive(speed, pid_response*yawrate);
+    SmartDashboard.putNumber("pid response", pid_response);
+    //m_drivetrain.tankDrive(pid_response, 1-pid_response);
+    m_drivetrain.arcadeDrive(speed, pid_response);
     /*
      * Arcade drive inverse kinematics for differential drive platform:
      * Parameters:

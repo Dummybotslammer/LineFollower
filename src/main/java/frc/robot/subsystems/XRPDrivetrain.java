@@ -41,8 +41,12 @@ public class XRPDrivetrain extends SubsystemBase {
     m_rightMotor.setInverted(true);
   }
 
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    m_diffDrive.tankDrive(leftSpeed, rightSpeed, false);
+  }
+
   public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
-    m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
+    m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate, false);
   }
 
   public void resetEncoders() {

@@ -40,7 +40,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_servo.setPosition(0.05);
+    //m_servo.setPosition(0.05);
     SmartDashboard.putData(m_chooser);
   }
 
